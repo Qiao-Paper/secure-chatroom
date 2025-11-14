@@ -1,24 +1,15 @@
-"""
-简单对称加密封装：
-- 使用 cryptography 的 Fernet（底层是 AES + HMAC）
-- KEY 由固定密码 + SALT 通过 PBKDF2 推导出来
-  只要 server 和 client 这两个文件内容一样，就能成功通信
-"""
-
+# 直接复制 server/encryption.py 的内容即可
 import base64
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
 
 
-# ======= 下面两项是“共享密钥”的来源 =======
-# 注意：client/encryption.py 里必须完全一样
 PASSPHRASE = b"my_super_secret_chatroom_password"
-SALT = b"static_salt_1234"  # 16 bytes 固定盐，课堂项目够用
+SALT = b"static_salt_1234"
 
 
 def _derive_key() -> bytes:
-    """从 PASSPHRASE + SALT 衍生出 32 字节 key，并转成 Fernet 需要的 base64 格式。"""
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
         length=32,
@@ -34,14 +25,12 @@ _cipher = Fernet(_KEY)
 
 
 def encrypt_msg(plaintext: str) -> bytes:
-    """输入明文字符串，输出密文字节串，用于 socket.sendall()."""
     if not isinstance(plaintext, str):
         raise TypeError("encrypt_msg expects str")
     return _cipher.encrypt(plaintext.encode("utf-8"))
 
 
 def decrypt_msg(token: bytes) -> str:
-    """输入从 socket.recv() 得到的密文字节串，输出解密后的字符串。"""
     if not isinstance(token, (bytes, bytearray)):
         raise TypeError("decrypt_msg expects bytes")
     return _cipher.decrypt(token).decode("utf-8")
