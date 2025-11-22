@@ -1,1 +1,11 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environment
 .venv/
+venv/
+
+# Other
+*.log
+.DS_Store
