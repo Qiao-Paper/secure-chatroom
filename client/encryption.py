@@ -1,4 +1,3 @@
-# 直接复制 server/encryption.py 的内容即可
 import base64
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC

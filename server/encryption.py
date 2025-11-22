@@ -1,8 +1,8 @@
 """
-简单对称加密封装：
-- 使用 cryptography 的 Fernet（底层是 AES + HMAC）
-- KEY 由固定密码 + SALT 通过 PBKDF2 推导出来
-  只要 server 和 client 这两个文件内容一样，就能成功通信
+Simple symmetric encryption wrapper:
+- Uses cryptography's Fernet (AES + HMAC under the hood)
+- KEY is derived from a fixed password + SALT using PBKDF2
+    As long as server and client files are identical, communication will succeed
 """
 
 import base64
@@ -11,14 +11,13 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
 
 
-# ======= 下面两项是“共享密钥”的来源 =======
-# 注意：client/encryption.py 里必须完全一样
+
 PASSPHRASE = b"my_super_secret_chatroom_password"
-SALT = b"static_salt_1234"  # 16 bytes 固定盐，课堂项目够用
+SALT = b"static_salt_1234"  # 16 bytes fixed salt, sufficient for classroom project
 
 
 def _derive_key() -> bytes:
-    """从 PASSPHRASE + SALT 衍生出 32 字节 key，并转成 Fernet 需要的 base64 格式。"""
+    """Derive a 32-byte key from PASSPHRASE + SALT, and convert to Fernet's required base64 format."""
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
         length=32,
@@ -34,14 +33,14 @@ _cipher = Fernet(_KEY)
 
 
 def encrypt_msg(plaintext: str) -> bytes:
-    """输入明文字符串，输出密文字节串，用于 socket.sendall()."""
+    """Input plaintext string, output ciphertext bytes, for use with socket.sendall()."""
     if not isinstance(plaintext, str):
         raise TypeError("encrypt_msg expects str")
     return _cipher.encrypt(plaintext.encode("utf-8"))
 
 
 def decrypt_msg(token: bytes) -> str:
-    """输入从 socket.recv() 得到的密文字节串，输出解密后的字符串。"""
+    """Input ciphertext bytes received from socket.recv(), output decrypted string."""
     if not isinstance(token, (bytes, bytearray)):
         raise TypeError("decrypt_msg expects bytes")
     return _cipher.decrypt(token).decode("utf-8")
