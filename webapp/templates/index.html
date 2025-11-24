@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Secure Chatroom (Web)</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<div class="container">
+	<h1>Secure Chatroom (Web)</h1>
+
+	<div class="nick-panel">
+		<input id="nickname" type="text" placeholder="Enter nickname" />
+		<button id="setNickBtn">Set Nickname</button>
+		<span id="nickStatus" class="status"></span>
+	</div>
+
+	<div id="messages" class="messages"></div>
+
+	<div class="input-panel">
+		<input id="messageInput" type="text" placeholder="Type a message... (/w Bob hi)" />
+		<button id="sendBtn">Send</button>
+	</div>
+
+	<div class="tips">
+		<p>Commands:</p>
+		<ul>
+			<li>/nick new_name - change nickname</li>
+			<li>/w target message - private message</li>
+		</ul>
+	</div>
+</div>
+
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
+
+

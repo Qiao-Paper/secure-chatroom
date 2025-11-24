@@ -1,2 +1,5 @@
 cryptography
 pyqt5
+flask
+flask-socketio
+eventlet
