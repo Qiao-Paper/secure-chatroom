@@ -1,102 +1,211 @@
 :root {
-	--bg: #0f172a;
-	--panel: #111827;
-	--text: #e5e7eb;
-	--muted: #9ca3af;
-	--accent: #22d3ee;
-	--system: #a78bfa;
-	--broadcast: #34d399;
+    --bg: #020617;
+    --panel: #020617;
+    --panel-soft: #02081b;
+    --text: #e5e7eb;
+    --muted: #9ca3af;
+    --accent: #22d3ee;
+    --accent-soft: #0ea5e9;
+    --system: #a78bfa;
+    --broadcast: #4ade80;
+    --bubble-self: #0f766e;
+    --bubble-other: #0b1220;
+    --border-subtle: #1f2937;
 }
 
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
+
 body {
-	margin: 0;
-	background: var(--bg);
-	color: var(--text);
-	font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(circle at top, #0b1120 0, #020617 55%);
+    color: var(--text);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-.container {
-	max-width: 900px;
-	margin: 24px auto;
-	padding: 0 16px;
+.app {
+    max-width: 960px;
+    margin: 24px auto 32px;
+    padding: 24px 24px 18px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #020617, #020617) padding-box,
+                linear-gradient(135deg, rgba(34,211,238,.5), rgba(168,85,247,.4)) border-box;
+    border: 1px solid transparent;
+    box-shadow: 0 24px 60px rgba(15,23,42,0.85);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
 }
 
-h1 {
-	font-size: 20px;
-	font-weight: 600;
-	margin: 0 0 12px 0;
-	color: var(--accent);
+.header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 4px;
 }
 
-.nick-panel, .input-panel {
-	display: flex;
-	gap: 8px;
-	margin-bottom: 12px;
+.header h1 {
+    margin: 0;
+    font-size: 22px;
+    letter-spacing: 0.03em;
+    color: var(--accent);
 }
 
-input[type="text"] {
-	flex: 1;
-	padding: 10px 12px;
-	border: 1px solid #374151;
-	border-radius: 8px;
-	background: #0b1220;
-	color: var(--text);
-	outline: none;
+.nick-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-button {
-	padding: 10px 16px;
-	border: 1px solid #374151;
-	border-radius: 8px;
-	background: #0b1220;
-	color: var(--text);
-	cursor: pointer;
-}
-button:hover {
-	border-color: var(--accent);
+.nick-input {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--border-subtle);
+    background: rgba(15,23,42,0.9);
+    color: var(--text);
+    outline: none;
+    font-size: 14px;
 }
 
-.status {
-	align-self: center;
-	color: var(--muted);
+.nick-input::placeholder,
+.msg-input::placeholder {
+    color: var(--muted);
+}
+
+.nick-input:focus,
+.msg-input:focus {
+    border-color: var(--accent-soft);
+    box-shadow: 0 0 0 1px rgba(34,211,238,0.3);
+}
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    background: linear-gradient(135deg, #06b6d4, #0ea5e9);
+    color: #0b1120;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: transform 0.08s ease-out, box-shadow 0.08s ease-out,
+                filter 0.12s ease-out;
+}
+
+.btn:hover {
+    filter: brightness(1.05);
+    box-shadow: 0 8px 24px rgba(34,211,238,0.35);
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.nick-status {
+    font-size: 13px;
+    color: var(--muted);
 }
 
 .messages {
-	height: 50vh;
-	min-height: 320px;
-	padding: 12px;
-	border: 1px solid #374151;
-	border-radius: 12px;
-	background: var(--panel);
-	overflow-y: auto;
-	white-space: pre-wrap;
-	display: flex;
-	flex-direction: column;
-	gap: 6px;
+    height: 52vh;
+    min-height: 320px;
+    padding: 14px 14px 10px;
+    border-radius: 14px;
+    background: radial-gradient(circle at top left, #020617, #020617) border-box,
+                radial-gradient(circle at bottom right, #0b1120, #020617) padding-box;
+    border: 1px solid #111827;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.messages::-webkit-scrollbar {
+    width: 6px;
+}
+.messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+.messages::-webkit-scrollbar-thumb {
+    background: #1f2937;
+    border-radius: 999px;
 }
 
 .line {
-	max-width: 70%;
-	padding: 8px 10px;
-	border-radius: 10px;
-	background: #0b1220;
+    max-width: 70%;
+    padding: 8px 11px;
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.4;
+    word-break: break-word;
+    position: relative;
 }
-.line.system { color: var(--system); }
-.line.broadcast { color: var(--broadcast); }
+
+.line.system {
+    align-self: center;
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--system);
+    background: rgba(15,23,42,0.7);
+}
+
+.line.broadcast {
+    align-self: center;
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 11px;
+    background: rgba(16,185,129,0.1);
+    color: var(--broadcast);
+}
+
 .line.other {
-	align-self: flex-start;
-	background: #0b1220;
+    align-self: flex-start;
+    background: var(--bubble-other);
+    border: 1px solid rgba(31,41,55,0.8);
+    border-radius: 14px 14px 14px 4px;
 }
+
 .line.self {
-	align-self: flex-end;
-	background: #0b1a2a;
-	border: 1px solid #1f2937;
+    align-self: flex-end;
+    background: var(--bubble-self);
+    border-radius: 14px 14px 4px 14px;
+    color: #ecfeff;
+}
+
+.input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.msg-input {
+    flex: 1;
+    padding: 9px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--border-subtle);
+    background: rgba(15,23,42,0.9);
+    color: var(--text);
+    outline: none;
+    font-size: 14px;
 }
 
 .tips {
-	color: var(--muted);
-	font-size: 14px;
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 13px;
 }
 
-
+.tips ul {
+    margin: 4px 0 0;
+    padding-left: 18px;
+}

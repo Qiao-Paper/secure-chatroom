@@ -149,6 +149,12 @@ def on_disconnect():
 
 if __name__ == "__main__":
 	# Bind to all interfaces so it can be exposed via tunnel
-	socketio.run(app, host="0.0.0.0", port=5000)
+    socketio.run(
+        app,
+        host="0.0.0.0",
+        port=5000,
+        debug=False,
+        use_reloader=False,
+    )
 
 

@@ -1,40 +1,39 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Secure Chatroom (Web)</title>
-	<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <meta charset="utf-8">
+    <title>Secure Chatroom (Web)</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
 </head>
 <body>
-<div class="container">
-	<h1>Secure Chatroom (Web)</h1>
+<div class="app">
+    <header class="header">
+        <h1>Secure Chatroom (Web)</h1>
+    </header>
 
-	<div class="nick-panel">
-		<input id="nickname" type="text" placeholder="Enter nickname" />
-		<button id="setNickBtn">Set Nickname</button>
-		<span id="nickStatus" class="status"></span>
-	</div>
+    <div class="nick-row">
+        <input id="nickname" class="nick-input" placeholder="Enter nickname" />
+        <button id="setNickBtn" class="btn">Set Nickname</button>
+        <span id="nickStatus" class="nick-status"></span>
+    </div>
 
-	<div id="messages" class="messages"></div>
+    <div id="messages" class="messages"></div>
 
-	<div class="input-panel">
-		<input id="messageInput" type="text" placeholder="Type a message... (/w Bob hi)" />
-		<button id="sendBtn">Send</button>
-	</div>
+    <div class="input-row">
+        <input id="messageInput" class="msg-input" placeholder="Type a message... (/w Bob hi)" />
+        <button id="sendBtn" class="btn">Send</button>
+    </div>
 
-	<div class="tips">
-		<p>Commands:</p>
-		<ul>
-			<li>/nick new_name - change nickname</li>
-			<li>/w target message - private message</li>
-		</ul>
-	</div>
+    <div class="tips">
+        <p>Commands:</p>
+        <ul>
+            <li>/nick NEW_NAME – change nickname</li>
+            <li>/w TARGET MESSAGE – private message</li>
+        </ul>
+    </div>
 </div>
 
-<script src="/socket.io/socket.io.js"></script>
-<script src="{{ url_for('static', filename='app.js') }}?v=2"></script>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>
-
-
