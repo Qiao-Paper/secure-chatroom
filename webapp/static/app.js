@@ -16,6 +16,12 @@
 	let currentNick = "";
 
 	function appendMessage(text, cssClass = "") {
+		// Also mirror to console for debugging
+		if (cssClass) {
+			console.log(`[${cssClass}]`, text);
+		} else {
+			console.log(text);
+		}
 		const line = document.createElement("div");
 		line.className = `line ${cssClass}`.trim();
 		line.textContent = text;
@@ -38,6 +44,7 @@
 	});
 
 	socket.on("nick", (payload) => {
+		console.log("nick event:", payload);
 		if (payload && payload.nickname) {
 			currentNick = payload.nickname;
 			nickStatusEl.textContent = `Nickname: ${currentNick}`;
@@ -45,6 +52,7 @@
 	});
 
 	socket.on("system", (payload) => {
+		console.log("system event:", payload);
 		if (payload && payload.text) {
 			appendMessage(payload.text, "system");
 			nickStatusEl.textContent = payload.text.startsWith("Your nickname is now")
@@ -54,12 +62,14 @@
 	});
 
 	socket.on("broadcast", (payload) => {
+		console.log("broadcast event:", payload);
 		if (payload && payload.text) {
 			appendMessage(payload.text, "broadcast");
 		}
 	});
 
 	socket.on("message", (payload) => {
+		console.log("message event:", payload);
 		if (payload && payload.text) {
 			const sender = payload.sender || "";
 			let isSelf = !!currentNick && sender === currentNick;
@@ -74,6 +84,7 @@
 
 	setNickBtn.addEventListener("click", () => {
 		const desired = nicknameEl.value.trim();
+		console.log("emit set_nick", desired);
 		socket.emit("set_nick", { nickname: desired });
 	});
 
@@ -86,6 +97,7 @@
 	sendBtn.addEventListener("click", () => {
 		const text = messageInputEl.value;
 		if (!text.trim()) return;
+		console.log("emit chat_message", text);
 		socket.emit("chat_message", { text });
 		messageInputEl.value = "";
 		messageInputEl.focus();

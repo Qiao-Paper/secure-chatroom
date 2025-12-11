@@ -18,3 +18,9 @@ echo "Keep this terminal open to keep the tunnel alive."
 exec "${CF_BIN}" tunnel --no-autoupdate --url "http://localhost:${PORT}"
 
 
+
+
+
+
+
+
